@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<style type="text/css">
+
+    .myDiv {
+        overflow:hidden;
+    }
+
+</style>
+{% if blog_length <= 4 %}
+<div style="background-color: #f5f0e1; height: 900px;">
+  {% else %}
+<div style="background-color: #f5f0e1; height: 100%;">
+    {% endif %}
+    {% for td in blog_list %}
+    <br><br>
+<div style="position:relative: -left:300px; width: 1300px; padding-left: 370px;">
+<div class="card mt-2">
+    <div class="card-header"><strong><a href="../other_profile/{{td.user.id}}">@{{ td.user.username }}</a></strong> </div>
+    <div class="card-body d-flex flex-row justify-content-between">
+        <div style="width: 800px; height:100%;">
+        <div>
+            <h5 class="card-title">{{td.title}}</h5>
+            <p>{{td.text}}</p>
+            {% if td.blog_image %}
+            <img src="{{ td.blog_image.url }}" width="500"/>
+            {% endif %}
+        </div>
+            </div>
+        {% if user == td.user %}
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger" style="float: right;" name="blog-id-delete" value="{{td.id}}">Delete</button>
+                <button type="submit" class="btn btn-primary" style="float: right; margin-right: 10px;" name="blog-id-edit" value="{{td.id}}"
+                onclick="window.open('http://127.0.0.1:8000/edit/{{td.id}}','_blank')">Edit</button>
+            </form>
+        {% endif %}
+    </div>
+    <div class="card-footer text-muted">{{td.date}}</div>
+</div>
+    </div>
+{% empty %}
+        <div style="background-color: #f5f0e1; height: 850px;">
+    <p>There are no blogs yet</p>
+        </div>
+{% endfor %}
+    </div>
+{% endblock %}

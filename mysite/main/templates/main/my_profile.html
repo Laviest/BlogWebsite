@@ -1,0 +1,53 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+{% if blog_length == 1 %}
+<div style="background-color: #f5f0e1; height: 900px;">
+  {% else %}
+<div style="background-color: #f5f0e1; height: 100%;">
+    {% endif %}
+        <div>
+        <div style="position:relative: left:300px; width: 1300px; padding-left: 380px;">
+            <br>        <br>
+            <h3>Username: @{{user.username}}</h3>
+            <h3>Name and Surename: {{user.first_name}} {{user.last_name}}</h3>
+            <h4>email: {{user.email}}</h4>
+
+        </div>
+    </div>
+    {% for td in user.blog_search.all %}
+        <br><br>
+<div style="position:relative: left:300px; width: 1300px; padding-left: 370px;">
+<div class="card mt-2">
+    <div class="card-header"><strong style="position:absolute"><a href="">@{{ td.user.username }}</a></strong>
+                {% if user == td.user %}
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger" style="float: right;" name="blog-id-delete" value="{{td.id}}">Delete</button>
+                <button type="submit" class="btn btn-primary" style="float: right; margin-right: 10px;" name="blog-id-edit" value="{{td.id}}"
+                onclick="window.open('http://127.0.0.1:8000/edit/{{td.id}}','_blank')">Edit</button>
+            </form>
+            {% endif %}
+    </div>
+    <div class="card-body d-flex flex-row justify-content-between">
+        <div style="width: 900px; height:100%;">
+        <div>
+            <h5 class="card-title">{{td.title}}</h5>
+            <p>{{td.text}}</p>
+                        {% if td.blog_image %}
+            <img src="{{ td.blog_image.url }}" width="500"/>
+            {% endif %}
+        </div>
+            </div>
+    </div>
+    <div class="card-footer text-muted">{{td.date}}</div>
+</div>
+    </div>
+{% empty %}
+    <div style="background-color: #f5f0e1; height: 850px;">
+    <p>You have no blogs</p>
+    </div>
+{% endfor %}
+</div>
+</div>
+{% endblock %}

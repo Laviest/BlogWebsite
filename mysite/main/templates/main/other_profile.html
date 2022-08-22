@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+
+{% block title %}View profile{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if blog_length <= 3 %}
+<div style="background-color: #f5f0e1; height: 900px;">
+  {% else %}
+<div style="background-color: #f5f0e1; height: 100%;">
+    {% endif %}
+        <div>
+        <div style="position:relative: left:300px; width: 1300px; padding-left: 380px;">
+            <br>        <br>
+            <h3>Username: @{{user.username}}</h3>
+            <h3>Name and Surename: {{user.first_name}} {{user.last_name}}</h3>
+            <h4>email: {{user.email}}</h4>
+
+        </div>
+    </div>
+    {% for td in user.blog_search.all %}
+        <br><br>
+<div style="position:relative: left:300px; width: 1300px; padding-left: 370px;">
+<div class="card mt-2">
+    <div class="card-header"><strong><a href="">@{{ td.user.username }}</a></strong>
+    </div>
+    <div class="card-body d-flex flex-row justify-content-between">
+        <div style="width: 900px; height:100%;">
+        <div>
+            <h5 class="card-title">{{td.title}}</h5>
+            <p>{{td.text}}</p>
+                        {% if td.blog_image %}
+            <img src="{{ td.blog_image.url }}" width="500"/>
+            {% endif %}
+        </div>
+            </div>
+    </div>
+    <div class="card-footer text-muted">{{td.date}}</div>
+</div>
+    </div>
+{% empty %}
+    <div style="background-color: #f5f0e1; height: 680px;">
+    <p>They have no blogs</p>
+    </div>
+{% endfor %}
+</div>
+</div>
+{% endblock %}
